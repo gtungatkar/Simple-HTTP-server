@@ -1,0 +1,53 @@
+*****Simple HTTP Web Server*****
+*******************************
+
+Author: Gaurav Tungatkar 
+
+Description: 
+A simple HTTP server written in C, using sockets, that serves static web pages.
+Along with the server engine, some additional utilities like the fileparser,
+connection handler, tokenizer that may be helpful later in other projects.
+
+Code organization and directory structure:
+
+Project1
+    |__ src - All .c source files in this directory
+    |__ include - All header files in this directory
+    |_Makefile, config.txt - These files at the same level
+    
+tokenize.c             -utility function to separate a line into tokens
+fileparser.c           -utility function to parse a file line by line
+http_config.c          -Handles reading of config file, error checking and populating
+                        in-memory config object.
+http_server.c          -Main http server engine
+listener.c             -Connection handler routine
+
+Instructions to compile:
+1. Go to base project folder Project1.
+2. make
+
+Instructions to run:
+1. From Project1 folder
+./obj/http_server [config_file]
+
+Config file path is optional. It may be specified at the command line.
+If not provided, following assumptions hold:-
+        a. config.txt located in Project1 directory is the default config file
+        b. The config.txt file must be located in the cwd(current working
+                        directory from which server is run)
+
+Technique to handle concurrent requests:
+A new process is "fork"ed on receiving a request. The newly forked server
+instance then processes this request, while the original process keeps listening
+for new connections. Though fork can be costly, it allows a simpler model of
+implementation without needing locking(in case of threads), etc. 
+However, the implementation is modular enough so that a pthread based 
+server can be implemented with minimal change.
+
+Limitations:
+Client may send requests in HTTP/1.0 or HTTP/1.1 version. However, server response is always HTTP/1.0 
+This folows the Robustness principle given in rfc 2145 http://www.ietf.org/rfc/rfc2145.txt
+
+Logging:
+Logs can be turned off by defining TRACE to be 0 in log.h at compile time.
+All logs are currently directed to stdout.

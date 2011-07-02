@@ -1,0 +1,14 @@
+Listen 8080 
+#comment
+DocumentRoot /home/gaurav/Dropbox/Code
+
+DirectoryIndex index.html 
+
+.htm text/html
+.html text/html
+.txt text/plain
+.jpeg image/jpeg
+.jpg image/jpeg
+.png image/png
+.gif image/gif
+.bmp image/bmp
